@@ -10,6 +10,7 @@ RUN apk add --no-cache \
     git \
     unzip \
     pkgconf \
+    sqlite-dev \
     libpng-dev \
     libxml2-dev \
     libzip-dev \
