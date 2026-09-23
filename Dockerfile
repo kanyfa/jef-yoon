@@ -9,14 +9,14 @@ WORKDIR $LARAVEL_PATH
 RUN apk add --no-cache \
     git \
     unzip \
+    pkgconf \
     libpng-dev \
     libxml2-dev \
     libzip-dev \
     zlib-dev \
     freetype-dev \
-    libjpeg-turbo \
-    libwebp \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
+    libjpeg-turbo-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j"$(nproc)" pdo_sqlite mbstring pdo intl zip gd bcmath opcache
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
