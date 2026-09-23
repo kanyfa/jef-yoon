@@ -11,6 +11,8 @@ RUN apk add --no-cache \
     unzip \
     pkgconf \
     sqlite-dev \
+    icu-dev \
+    oniguruma-dev \
     libpng-dev \
     libxml2-dev \
     libzip-dev \
