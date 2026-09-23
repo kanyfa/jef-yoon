@@ -29,8 +29,19 @@ COPY --from=node /usr/local/lib/node_modules /usr/local/lib/node_modules
 
 COPY . .
 
-RUN composer install --no-interaction --no-dev --prefer-dist --optimize-autoloader
-RUN npm ci && npm run build
+ENV COMPOSER_NO_INTERACTION=1
+ENV COMPOSER_HTTP_RETRIES=5
+ENV COMPOSER_HTTP_TIMEOUT=600
+ENV COMPOSER_DOWNLOAD_MAX_TIMEOUT=600
+ENV COMPOSER_PREFER_STABLE=1
+ENV COMPOSER_AUDIT_ABANDONED=ignore
+
+RUN git config --global url."https://github.com/".insteadOf git://github.com/ \
+ && git config --global url."https://github.com/".insteadOf git@github.com: \
+ && composer install --no-interaction --prefer-dist --no-dev --optimize-autoloader --no-scripts
+
+ENV NODE_VERSION=22
+RUN npm ci --no-audit --no-fund && npm run build
 RUN php artisan package:discover --ansi && php artisan config:cache
 
 RUN mkdir -p public/build public/storage storage/app/framework/sessions storage/app/framework/views storage/app/framework/cache/files bootstrap/cache
